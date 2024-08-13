@@ -1,6 +1,6 @@
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Table } from 'antd'
+import { Button, Table } from 'antd'
 import { useEffect, useState } from 'react'
 import userAPI from '~/api/userAPI'
 import ModalDeleteUser from './ModalDeleteUser/ModalDeleteUser'
@@ -77,6 +77,9 @@ function ListUser() {
 
   return (
     <>
+      <Button className='mb-2' type='primary'>
+        Create New User
+      </Button>
       <Table
         columns={columns}
         dataSource={dataSource}
