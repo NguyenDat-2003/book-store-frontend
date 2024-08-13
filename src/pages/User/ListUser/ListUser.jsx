@@ -4,6 +4,7 @@ import { Button, Table } from 'antd'
 import { useEffect, useState } from 'react'
 import userAPI from '~/api/userAPI'
 import ModalDeleteUser from './ModalDeleteUser/ModalDeleteUser'
+import ModalAddNewUser from './ModalAddNewUser/ModalAddNewUser'
 
 function ListUser() {
   const columns = [
@@ -55,6 +56,7 @@ function ListUser() {
   const [dataSource, setDataSource] = useState([])
   const [dataUser, setDataUser] = useState({})
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalAddNew, setIsModalAddNew] = useState(false)
 
   const handleDeleteUser = (user) => {
     setIsModalOpen(true)
@@ -89,6 +91,7 @@ function ListUser() {
         }}
       />
       <ModalDeleteUser isModalOpen={isModalOpen} handleOk={handleOk} handleCancel={handleCancel} dataUser={dataUser} />
+      <ModalAddNewUser />
     </>
   )
 }
