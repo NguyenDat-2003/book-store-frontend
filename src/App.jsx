@@ -8,6 +8,7 @@ import Cart from './pages/Cart/Cart'
 import BookDetail from './components/BookDetail/BookDetail'
 import Checkout from './pages/Cart/Checkout/Checkout'
 import Order from './pages/User/Order/Order'
+import ListUser from './pages/User/ListUser/ListUser'
 
 function App() {
   const router = createBrowserRouter([
@@ -27,6 +28,10 @@ function App() {
       path: '/',
       element: <RequireLayout />,
       children: [{ path: 'my-cart', element: <Cart /> }]
+    },
+    {
+      path: '/users',
+      element: <ListUser />
     }
   ])
 
