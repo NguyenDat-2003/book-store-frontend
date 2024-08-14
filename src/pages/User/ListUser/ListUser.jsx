@@ -79,7 +79,7 @@ function ListUser() {
 
   return (
     <>
-      <Button className='mb-2' type='primary'>
+      <Button className='mb-2' type='primary' onClick={() => setIsModalAddNew(true)}>
         Create New User
       </Button>
       <Table
@@ -91,7 +91,7 @@ function ListUser() {
         }}
       />
       <ModalDeleteUser isModalOpen={isModalOpen} handleOk={handleOk} handleCancel={handleCancel} dataUser={dataUser} />
-      <ModalAddNewUser />
+      <ModalAddNewUser isModalAddNew={isModalAddNew} setIsModalAddNew={setIsModalAddNew} fetchAllUsers={fetchAllUsers} />
     </>
   )
 }

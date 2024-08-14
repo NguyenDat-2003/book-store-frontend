@@ -8,6 +8,10 @@ const userAPI = {
   deleteUser: (id) => {
     const url = `/user/${id}`
     return axiosClient.delete(url)
+  },
+  createUser: (data) => {
+    const url = '/user'
+    return axiosClient.post(url, data)
   }
 }
 
