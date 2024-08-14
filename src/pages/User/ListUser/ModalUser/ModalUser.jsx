@@ -8,7 +8,7 @@ import userAPI from '~/api/userAPI'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExclamation } from '@fortawesome/free-solid-svg-icons'
 
-const ModalAddNewUser = ({ isModalAddNew, setIsModalAddNew, fetchAllUsers }) => {
+const ModalUser = ({ action, isModalUser, setIsModalUser, fetchAllUsers, dataModalUser, setDataModalUser }) => {
   const [listGroup, setListGroup] = useState([])
 
   const dataUserDefault = {
@@ -35,23 +35,26 @@ const ModalAddNewUser = ({ isModalAddNew, setIsModalAddNew, fetchAllUsers }) => 
 
   const handleOk = async () => {
     if (checkValidateInput()) {
-      const res = await userAPI.createUser(dataUser)
-      if (res) {
-        setIsModalAddNew(false)
-
-        setDataUser({
-          ...dataUserDefault,
-          sex: 'Nam',
-          groupId: listGroup.length > 0 ? listGroup[0].id : ''
-        })
-
-        fetchAllUsers()
-        toast.success('Create User Successfully')
+      try {
+        const res = await userAPI.createUser(dataUser)
+        if (res) {
+          setIsModalUser(false)
+          setDataUser({
+            ...dataUserDefault,
+            sex: 'Nam',
+            groupId: listGroup.length > 0 ? listGroup[0].id : ''
+          })
+          fetchAllUsers()
+          toast.success('Create User Successfully')
+        }
+      } catch (error) {
+        toast.error(error.response.data.message)
       }
     }
   }
   const handleCancel = () => {
-    setIsModalAddNew(false)
+    setIsModalUser(false)
+    setDataModalUser({})
   }
 
   const handleOnChangeInput = (value, name) => {
@@ -62,7 +65,7 @@ const ModalAddNewUser = ({ isModalAddNew, setIsModalAddNew, fetchAllUsers }) => 
 
   const checkValidateInput = () => {
     let check = true
-    let arr = ['firstName', 'lastName', 'email', 'phone', 'password']
+    let arr = ['firstName', 'lastName', 'email', 'phone', 'password', 'sex', 'groupId']
     for (let i = 0; i < arr.length; i++) {
       if (!dataUser[arr[i]]) {
         let _validInput = _.cloneDeep(validInputDefault)
@@ -82,7 +85,6 @@ const ModalAddNewUser = ({ isModalAddNew, setIsModalAddNew, fetchAllUsers }) => 
         const res = await groupAPI.gettAllGroups()
         if (res && res.length > 0) {
           setListGroup(res)
-          setDataUser({ ...dataUser, sex: 'Nam', groupId: res[0].id })
         }
       } catch (error) {
         console.log(error)
@@ -91,24 +93,34 @@ const ModalAddNewUser = ({ isModalAddNew, setIsModalAddNew, fetchAllUsers }) => 
     fetchAllGroups()
   }, [])
 
+  useEffect(() => {
+    if (action === 'UPDATE') {
+      setDataUser(dataModalUser)
+    }
+  }, [dataModalUser])
+
   return (
     <>
-      <Modal title='Create New user' open={isModalAddNew} width={800} onOk={handleOk} onCancel={handleCancel}>
+      <Modal title={action == 'CREATE' ? 'Create new user' : 'Edit a user'} open={isModalUser} width={800} onOk={handleOk} onCancel={handleCancel}>
         <div className='grid grid-cols-2 gap-4'>
           <InputModalUser value={dataUser.firstName} validInput={validInput.firstName} placeholder='First Name' handleOnChangeInput={handleOnChangeInput} inputName='firstName' />
           <InputModalUser value={dataUser.lastName} validInput={validInput.lastName} placeholder='Last Name' handleOnChangeInput={handleOnChangeInput} inputName='lastName' />
-          <InputModalUser value={dataUser.email} validInput={validInput.email} placeholder='Email' handleOnChangeInput={handleOnChangeInput} inputName='email' />
-          <InputModalUser value={dataUser.phone} validInput={validInput.phone} placeholder='Phone' handleOnChangeInput={handleOnChangeInput} inputName='phone' />
-          <Input.Password
-            value={dataUser.password}
-            status={validInput.password ? '' : 'error'}
-            suffix={!validInput.password && <FontAwesomeIcon icon={faExclamation} />}
-            placeholder='Password'
-            onChange={(e) => handleOnChangeInput(e.target.value, 'password')}
-          />
+          <InputModalUser action={action} value={dataUser.email} validInput={validInput.email} placeholder='Email' handleOnChangeInput={handleOnChangeInput} inputName='email' />
+          <InputModalUser action={action} value={dataUser.phone} validInput={validInput.phone} placeholder='Phone' handleOnChangeInput={handleOnChangeInput} inputName='phone' />
+          {action === 'CREATE' && (
+            <Input.Password
+              value={dataUser.password}
+              status={validInput.password ? '' : 'error'}
+              suffix={!validInput.password && <FontAwesomeIcon icon={faExclamation} />}
+              placeholder='Password'
+              onChange={(e) => handleOnChangeInput(e.target.value, 'password')}
+            />
+          )}
 
           <Select
-            defaultValue='Nam'
+            placeholder='Sex'
+            value={dataUser.sex}
+            status={validInput.sex ? '' : 'error'}
             onChange={(value) => {
               handleOnChangeInput(value, 'sex')
             }}
@@ -128,7 +140,9 @@ const ModalAddNewUser = ({ isModalAddNew, setIsModalAddNew, fetchAllUsers }) => 
             ]}
           />
           <Select
-            defaultValue='Customer'
+            placeholder='Group'
+            value={dataUser.Group && dataUser.Group.name}
+            status={validInput.groupId ? '' : 'error'}
             onChange={(value) => {
               handleOnChangeInput(value, 'groupId')
             }}
@@ -144,4 +158,4 @@ const ModalAddNewUser = ({ isModalAddNew, setIsModalAddNew, fetchAllUsers }) => 
     </>
   )
 }
-export default ModalAddNewUser
+export default ModalUser
