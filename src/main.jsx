@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { AuthContextProvider } from './context/AuthContext.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+  <>
     <AuthContextProvider>
       <App />
     </AuthContextProvider>
@@ -23,5 +23,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       pauseOnHover
       theme='light'
     />
-  </React.StrictMode>
+  </>
 )

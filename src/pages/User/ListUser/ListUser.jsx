@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import userAPI from '~/api/userAPI'
 import ModalDeleteUser from './ModalDeleteUser/ModalDeleteUser'
 import ModalUser from './ModalUser/ModalUser'
+import { toast } from 'react-toastify'
 
 function ListUser() {
   const columns = [
@@ -46,7 +47,7 @@ function ListUser() {
       const res = await userAPI.getAllUsers()
       setDataSource(res)
     } catch (error) {
-      console.log(error)
+      toast.error(error.response.data.message)
     }
   }
   const [dataSource, setDataSource] = useState([])
@@ -60,7 +61,7 @@ function ListUser() {
   const [dataModalUser, setDataModalUser] = useState({})
 
   const handleEditUser = async (user) => {
-    const inforUser = await userAPI.getUser(user.id)
+    const inforUser = await userAPI.getUser(user)
     setIsModalUser(true)
     setActionModalUser('UPDATE')
     setDataModalUser(inforUser)
@@ -70,10 +71,14 @@ function ListUser() {
     setDataUserDelete(user)
   }
   const handleOk = async () => {
-    const res = await userAPI.deleteUser(dataUserDelete.id)
-    if (res) {
-      fetchAllUsers()
-      setIsModalOpen(false)
+    try {
+      const res = await userAPI.deleteUser(dataUserDelete)
+      if (res) {
+        fetchAllUsers()
+        setIsModalOpen(false)
+      }
+    } catch (error) {
+      toast.error(error.response.data.message)
     }
   }
   const handleCancel = () => {
