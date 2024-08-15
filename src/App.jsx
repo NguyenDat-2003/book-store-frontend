@@ -10,6 +10,7 @@ import Checkout from './pages/Cart/Checkout/Checkout'
 import Order from './pages/User/Order/Order'
 import ListUser from './pages/User/ListUser/ListUser'
 import NotFound from './pages/NotFound'
+import Role from './pages/Role/Role'
 
 function App() {
   const router = createBrowserRouter([
@@ -30,7 +31,10 @@ function App() {
     {
       path: '/',
       element: <PrivateLayout />,
-      children: [{ path: 'dash-board/users', element: <ListUser /> }]
+      children: [
+        { path: 'dash-board/users', element: <ListUser /> },
+        { path: 'dash-board/roles', element: <Role /> }
+      ]
     }
   ])
 
