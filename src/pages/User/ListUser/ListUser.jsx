@@ -26,7 +26,7 @@ function ListUser() {
     },
     {
       title: 'Group',
-      render: (data) => <span>{data.Group.name}</span>
+      render: (data) => <span>{data.Group && data.Group.name}</span>
     },
     {
       title: 'Actions',

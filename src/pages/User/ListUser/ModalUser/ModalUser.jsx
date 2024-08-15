@@ -36,16 +36,14 @@ const ModalUser = ({ action, isModalUser, setIsModalUser, fetchAllUsers, dataMod
   const handleOk = async () => {
     if (checkValidateInput()) {
       try {
-        const res = await userAPI.createUser(dataUser)
+        const res = action === 'CREATE' ? await userAPI.createUser(dataUser) : await userAPI.updateUser(dataModalUser.id, dataUser)
         if (res) {
           setIsModalUser(false)
           setDataUser({
-            ...dataUserDefault,
-            sex: 'Nam',
-            groupId: listGroup.length > 0 ? listGroup[0].id : ''
+            ...dataUserDefault
           })
           fetchAllUsers()
-          toast.success('Create User Successfully')
+          toast.success(res.message)
         }
       } catch (error) {
         toast.error(error.response.data.message)
@@ -66,6 +64,9 @@ const ModalUser = ({ action, isModalUser, setIsModalUser, fetchAllUsers, dataMod
   const checkValidateInput = () => {
     let check = true
     let arr = ['firstName', 'lastName', 'email', 'phone', 'password', 'sex', 'groupId']
+    if (action === 'UPDATE') {
+      arr = ['firstName', 'lastName', 'sex', 'groupId']
+    }
     for (let i = 0; i < arr.length; i++) {
       if (!dataUser[arr[i]]) {
         let _validInput = _.cloneDeep(validInputDefault)
@@ -96,6 +97,7 @@ const ModalUser = ({ action, isModalUser, setIsModalUser, fetchAllUsers, dataMod
   useEffect(() => {
     if (action === 'UPDATE') {
       setDataUser(dataModalUser)
+      setValidInput(validInputDefault)
     }
   }, [dataModalUser])
 
@@ -119,7 +121,7 @@ const ModalUser = ({ action, isModalUser, setIsModalUser, fetchAllUsers, dataMod
 
           <Select
             placeholder='Sex'
-            value={dataUser.sex}
+            value={dataUser.sex || undefined}
             status={validInput.sex ? '' : 'error'}
             onChange={(value) => {
               handleOnChangeInput(value, 'sex')
@@ -141,15 +143,15 @@ const ModalUser = ({ action, isModalUser, setIsModalUser, fetchAllUsers, dataMod
           />
           <Select
             placeholder='Group'
-            value={dataUser.Group && dataUser.Group.name}
+            value={dataUser.groupId || undefined}
             status={validInput.groupId ? '' : 'error'}
             onChange={(value) => {
               handleOnChangeInput(value, 'groupId')
             }}
             options={listGroup.map((item) => {
               return {
-                value: `${item.id}`,
-                label: `${item.name}`
+                value: item.id,
+                label: item.name
               }
             })}
           />
