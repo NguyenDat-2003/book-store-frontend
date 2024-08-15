@@ -15,7 +15,7 @@ export const AuthContextProvider = ({ children }) => {
       const res = await cartAPI.cartQuantity(userId)
       setQuantityCart(res.totalQuantity)
     } catch (error) {
-      console.log(error.response.message)
+      // console.log(error.response.data.message)
     }
   }
 
