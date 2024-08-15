@@ -36,7 +36,7 @@ const ModalUser = ({ action, isModalUser, setIsModalUser, fetchAllUsers, dataMod
   const handleOk = async () => {
     if (checkValidateInput()) {
       try {
-        const res = action === 'CREATE' ? await userAPI.createUser(dataUser) : await userAPI.updateUser(dataModalUser.id, dataUser)
+        const res = action === 'CREATE' ? await userAPI.createUser(dataUser) : await userAPI.updateUser({ id: dataModalUser.id, ...dataUser })
         if (res) {
           setIsModalUser(false)
           setDataUser({
