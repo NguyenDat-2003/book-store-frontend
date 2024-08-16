@@ -1,32 +1,62 @@
-import { faCirclePlus, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faCirclePlus, faExclamation, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Button, Input } from 'antd'
 import { useState } from 'react'
 import _ from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
+import { toast } from 'react-toastify'
+import { roleAPI } from '~/api/roleAPI'
 
 function Role() {
-  const [listChilds, setListChilds] = useState({
-    child0: { url: '', description: '' }
-  })
+  const dataChildDefault = { url: '', description: '', isValidUrl: true }
+  const [listChilds, setListChilds] = useState({ child0: dataChildDefault })
   const handleOnchangeInput = (name, value, key) => {
     let _listChilds = _.cloneDeep(listChilds)
     _listChilds[key][name] = value
+    if (value && name === 'url') {
+      _listChilds[key]['isValidUrl'] = true
+    }
     setListChilds(_listChilds)
   }
 
   const handleAddNewInput = () => {
     let _listChilds = _.cloneDeep(listChilds)
-    _listChilds[`child-${uuidv4()}`] = {
-      url: '',
-      description: ''
-    }
+    _listChilds[`child-${uuidv4()}`] = dataChildDefault
     setListChilds(_listChilds)
   }
   const handleDeleteInput = (key) => {
     let _listChilds = _.cloneDeep(listChilds)
     delete _listChilds[key]
     setListChilds(_listChilds)
+  }
+
+  const buildDataToPersist = () => {
+    let _listChilds = _.cloneDeep(listChilds)
+    const result = []
+    Object.entries(_listChilds).map(([key, value]) => {
+      result.push({
+        url: value.url,
+        description: value.description
+      })
+    })
+    return result
+  }
+
+  const handleSave = async () => {
+    const inValidObj = Object.entries(listChilds).find(([key, value]) => !value.url)
+
+    if (!inValidObj) {
+      const data = buildDataToPersist()
+      const res = await roleAPI.createRoles(data)
+      toast.success(res.message)
+      setListChilds({ child0: dataChildDefault })
+    } else {
+      let _listChilds = _.cloneDeep(listChilds)
+      const key = inValidObj[0]
+      _listChilds[key]['isValidUrl'] = false
+      toast.error('URL not to be empty !!!')
+      setListChilds(_listChilds)
+    }
   }
 
   return (
@@ -41,7 +71,12 @@ function Role() {
                   <div className={`flex flex-row ${key}`}>
                     <div className='basis-1/3 mr-4'>
                       <span>URL</span>
-                      <Input value={value.url} onChange={(e) => handleOnchangeInput('url', e.target.value, key)} />
+                      <Input
+                        status={value.isValidUrl ? undefined : 'error'}
+                        suffix={!value.isValidUrl && <FontAwesomeIcon icon={faExclamation} />}
+                        value={value.url}
+                        onChange={(e) => handleOnchangeInput('url', e.target.value, key)}
+                      />
                     </div>
                     <div className='basis-1/3 mr-4'>
                       <span>Description</span>
@@ -57,7 +92,9 @@ function Role() {
             )
           })}
         </div>
-        <Button type='primary'>Save</Button>
+        <Button type='primary' onClick={() => handleSave()}>
+          Save
+        </Button>
       </div>
     </>
   )
