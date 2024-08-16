@@ -1,15 +1,18 @@
 import { faCirclePlus, faExclamation, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Button, Input } from 'antd'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import _ from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 import { toast } from 'react-toastify'
 import { roleAPI } from '~/api/roleAPI'
+import TableRole from './TableRole/TableRole'
 
 function Role() {
   const dataChildDefault = { url: '', description: '', isValidUrl: true }
   const [listChilds, setListChilds] = useState({ child0: dataChildDefault })
+  const childRef = useRef()
+
   const handleOnchangeInput = (name, value, key) => {
     let _listChilds = _.cloneDeep(listChilds)
     _listChilds[key][name] = value
@@ -50,6 +53,7 @@ function Role() {
       const res = await roleAPI.createRoles(data)
       toast.success(res.message)
       setListChilds({ child0: dataChildDefault })
+      childRef.current.fetchAllRole()
     } else {
       let _listChilds = _.cloneDeep(listChilds)
       const key = inValidObj[0]
@@ -63,7 +67,7 @@ function Role() {
     <>
       <div className='rounded-lg bg-white p-4'>
         <p className='text-2xl font-medium mb-4'>Add new Role</p>
-        <div className=''>
+        <div>
           {Object.entries(listChilds).map(([key, value], index) => {
             return (
               <>
@@ -95,6 +99,10 @@ function Role() {
         <Button type='primary' onClick={() => handleSave()}>
           Save
         </Button>
+        <div className='mt-6'>
+          <p className='text-2xl font-medium mb-4'>All Roles</p>
+          <TableRole ref={childRef} />
+        </div>
       </div>
     </>
   )
