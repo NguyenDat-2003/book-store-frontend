@@ -15,12 +15,12 @@ function PrivateLayout() {
     return (
       <>
         <div className='flex flex-col h-screen width-screen'>
-          <Header />
           <div className='flex flex-1 justify-start items-start'>
             <div className='h-full basis-1/6 pt-2'>
               <SideMenu />
             </div>
             <div className='h-full flex-1 bg-gray-200 p-2'>
+              <Header />
               <Outlet />
             </div>
           </div>

@@ -16,5 +16,9 @@ export const roleAPI = {
   updateRole: (data) => {
     const url = 'role/update'
     return axiosClient.put(url, data)
+  },
+  getRoleByGroup: (groupId) => {
+    const url = `role/by-group/${groupId}`
+    return axiosClient.get(url)
   }
 }

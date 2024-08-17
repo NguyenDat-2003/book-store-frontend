@@ -10,7 +10,8 @@ import Checkout from './pages/Cart/Checkout/Checkout'
 import Order from './pages/User/Order/Order'
 import ListUser from './pages/User/ListUser/ListUser'
 import NotFound from './pages/NotFound'
-import Role from './pages/Role/Role'
+import Role from './pages/GroupRole/Role'
+import GroupRole from './pages/GroupRole/GroupRole'
 
 function App() {
   const router = createBrowserRouter([
@@ -33,7 +34,8 @@ function App() {
       element: <PrivateLayout />,
       children: [
         { path: 'dash-board/users', element: <ListUser /> },
-        { path: 'dash-board/roles', element: <Role /> }
+        { path: 'dash-board/roles', element: <Role /> },
+        { path: 'dash-board/permission', element: <GroupRole /> }
       ]
     }
   ])

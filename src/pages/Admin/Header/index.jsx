@@ -1,3 +1,5 @@
+import { faBars } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useContext } from 'react'
 import { AuthContext } from '~/context/AuthContext'
 
@@ -6,13 +8,11 @@ function Header() {
 
   return (
     <>
-      <div className='h-20 flex justify-start items-center py-4 px-2'>
-        <div className='basis-2/5'>
-          <p>
-            Welcom <b>{currentUser.email}</b>
-          </p>
-        </div>
-        <p className='text-3xl font-medium'>DASH BOARD</p>
+      <div className='h-20 flex justify-between items-center py-4 px-4 text-lg'>
+        <FontAwesomeIcon icon={faBars} className='mr-2' />
+        <p>
+          Welcom <b>{currentUser.email}</b>
+        </p>
       </div>
     </>
   )
