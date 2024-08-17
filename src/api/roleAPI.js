@@ -20,5 +20,9 @@ export const roleAPI = {
   getRoleByGroup: (groupId) => {
     const url = `role/by-group/${groupId}`
     return axiosClient.get(url)
+  },
+  assignRoleToGroup: (data) => {
+    const url = 'role/assign-role-group'
+    return axiosClient.post(url, data)
   }
 }

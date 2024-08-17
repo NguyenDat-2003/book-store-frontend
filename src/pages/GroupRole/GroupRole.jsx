@@ -1,4 +1,4 @@
-import { Checkbox, Select } from 'antd'
+import { Button, Checkbox, Select } from 'antd'
 import _ from 'lodash'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
@@ -46,6 +46,26 @@ function GroupRole() {
     setAssignRoleByGroup(result)
   }
 
+  const builDataToSave = () => {
+    const _assignRoleByGroup = _.cloneDeep(assignRoleByGroup)
+    let result = {}
+    const filterRoles = _assignRoleByGroup.filter((item) => item.assign === true)
+    result.groupId = selectGroup
+    const dataGroupRole = filterRoles.map((item) => {
+      return {
+        groupId: selectGroup,
+        roleId: item.id
+      }
+    })
+    result.groupRoles = dataGroupRole
+    return result
+  }
+  const handleSave = async () => {
+    const data = builDataToSave()
+    await roleAPI.assignRoleToGroup(data)
+    toast.success('Assign role to group success')
+  }
+
   const fetchAllGroups = async () => {
     try {
       const res = await groupAPI.gettAllGroups()
@@ -53,7 +73,7 @@ function GroupRole() {
         setListGroup(res)
       }
     } catch (error) {
-      toast.error(error.response.message)
+      toast.error(error.response.data.message)
     }
   }
 
@@ -62,7 +82,7 @@ function GroupRole() {
       const res = await roleAPI.getAllRoles()
       setlistRole(res)
     } catch (error) {
-      toast.error(error.response.message)
+      toast.error(error.response.data.message)
     }
   }
 
@@ -109,6 +129,9 @@ function GroupRole() {
                   </>
                 )
               })}
+            <Button type='primary' className='mt-4' onClick={handleSave}>
+              Save
+            </Button>
           </div>
         )}
       </div>
