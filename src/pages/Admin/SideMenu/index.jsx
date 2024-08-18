@@ -13,17 +13,17 @@ function SideMenu() {
       label: 'Home'
     },
     {
-      key: 'dash-board/books',
+      key: 'dash-board/book',
       icon: <FontAwesomeIcon icon={faBook} />,
       label: 'Book'
     },
     {
-      key: 'dash-board/users',
+      key: 'dash-board/user',
       icon: <FontAwesomeIcon icon={faUser} />,
       label: 'User'
     },
     {
-      key: 'dash-board/roles',
+      key: 'dash-board/role',
       icon: <FontAwesomeIcon icon={faUserSecret} />,
       label: 'Role'
     },
