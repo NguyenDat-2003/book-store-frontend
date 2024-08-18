@@ -61,9 +61,13 @@ function GroupRole() {
     return result
   }
   const handleSave = async () => {
-    const data = builDataToSave()
-    await roleAPI.assignRoleToGroup(data)
-    toast.success('Assign role to group success')
+    try {
+      const data = builDataToSave()
+      await roleAPI.assignRoleToGroup(data)
+      toast.success('Assign role to group success')
+    } catch (error) {
+      toast.error(error.response.data.message)
+    }
   }
 
   const fetchAllGroups = async () => {
@@ -82,7 +86,7 @@ function GroupRole() {
       const res = await roleAPI.getAllRoles()
       setlistRole(res)
     } catch (error) {
-      toast.error(error.response.data.message)
+      // toast.error(error.response.data.message)
     }
   }
 

@@ -41,9 +41,13 @@ const TableRole = forwardRef((props, ref) => {
   }))
 
   const handleDeleteUser = async (data) => {
-    await roleAPI.deleteRole(data.id)
-    fetchAllRole()
-    toast.success('Delete successfully')
+    try {
+      await roleAPI.deleteRole(data.id)
+      fetchAllRole()
+      toast.success('Delete successfully')
+    } catch (error) {
+      toast.error(error.response.data.message)
+    }
   }
 
   const handleEditUser = async (data) => {
@@ -61,11 +65,15 @@ const TableRole = forwardRef((props, ref) => {
       toast.error('URL not to be empty !')
       return
     }
-    setValidInputUrl(true)
-    await roleAPI.updateRole(dataModalRole)
-    toast.success('Update successfully')
-    setIsShowModal(false)
-    fetchAllRole()
+    try {
+      setValidInputUrl(true)
+      await roleAPI.updateRole(dataModalRole)
+      toast.success('Update successfully')
+      setIsShowModal(false)
+      fetchAllRole()
+    } catch (error) {
+      toast.error(error.response.data.message)
+    }
   }
 
   const fetchAllRole = async () => {
@@ -73,7 +81,7 @@ const TableRole = forwardRef((props, ref) => {
       const res = await roleAPI.getAllRoles()
       setDataSource(res)
     } catch (error) {
-      toast.error(error.response.message)
+      toast.error(error.response.data.message)
     }
   }
 
