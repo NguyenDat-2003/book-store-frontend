@@ -2,7 +2,7 @@ import axiosClient from './axiosClient'
 
 const groupAPI = {
   gettAllGroups: () => {
-    const url = '/group'
+    const url = '/group/read'
     return axiosClient.get(url)
   }
 }

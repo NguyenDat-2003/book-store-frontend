@@ -82,13 +82,9 @@ const ModalUser = ({ action, isModalUser, setIsModalUser, fetchAllUsers, dataMod
 
   useEffect(() => {
     const fetchAllGroups = async () => {
-      try {
-        const res = await groupAPI.gettAllGroups()
-        if (res && res.length > 0) {
-          setListGroup(res)
-        }
-      } catch (error) {
-        console.log(error)
+      const res = await groupAPI.gettAllGroups()
+      if (res && res.length > 0) {
+        setListGroup(res)
       }
     }
     fetchAllGroups()
