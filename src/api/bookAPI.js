@@ -10,12 +10,16 @@ const bookAPI = {
     return axiosClient.get(url)
   },
   deleteBook: (id) => {
-    const url = `/book/delete/${id}`
+    const url = `/book/delete?id=${id}`
     return axiosClient.delete(url)
   },
   createBook: (data) => {
     const url = '/book/create'
     return axiosClient.post(url, data)
+  },
+  updateBook: (data) => {
+    const url = '/book/update'
+    return axiosClient.put(url, data)
   }
 }
 export default bookAPI

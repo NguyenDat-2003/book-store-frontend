@@ -25,7 +25,7 @@ const beforeUpload = (file) => {
   }
   return isJpgOrPng && isLt2M
 }
-function ModalBook({ isModalBook, setIsModalBook, fetchAllBook }) {
+function ModalBook({ isModalBook, setIsModalBook, fetchAllBook, action, dataModalBook }) {
   const [loading, setLoading] = useState(false)
   const [imageUrl, setImageUrl] = useState()
   const [listCate, setListCate] = useState([])
@@ -113,12 +113,12 @@ function ModalBook({ isModalBook, setIsModalBook, fetchAllBook }) {
   const handleOk = async () => {
     try {
       if (checkValidInput()) {
-        const res = await bookAPI.createBook(dataBook)
+        const res = action === 'CREATE' ? await bookAPI.createBook(dataBook) : await bookAPI.updateBook({ ...dataBook })
         if (res) {
           setDataBook(dataBookDefault)
           setIsModalBook(false)
           fetchAllBook()
-          toast.success('Book has successfully created')
+          toast.success(res.message)
         }
       }
     } catch (error) {
@@ -128,6 +128,8 @@ function ModalBook({ isModalBook, setIsModalBook, fetchAllBook }) {
 
   const handleCancel = () => {
     setIsModalBook(false)
+    setDataBook(dataBookDefault)
+    setImageUrl('')
   }
 
   const uploadButton = (
@@ -164,9 +166,14 @@ function ModalBook({ isModalBook, setIsModalBook, fetchAllBook }) {
     fetchAllCateAndSup()
   }, [])
 
+  useEffect(() => {
+    setDataBook(dataModalBook)
+    setImageUrl(dataModalBook.image)
+  }, [dataModalBook])
+
   return (
     <>
-      <Modal title='Create New Book' open={isModalBook} width={800} onOk={handleOk} onCancel={handleCancel}>
+      <Modal title={action === 'CREATE' ? 'Create New Book' : 'Udpate A Book'} open={isModalBook} width={800} onOk={handleOk} onCancel={handleCancel}>
         <div className='grid grid-cols-2 gap-4'>
           <div>
             <Upload
@@ -193,16 +200,30 @@ function ModalBook({ isModalBook, setIsModalBook, fetchAllBook }) {
               )}
             </Upload>
           </div>
-          <InputModalBook labelName='Name' name='name' validInput={validInput.name} isRequireInput handleChangeInput={handleChangeInput} />
-          <InputModalBook labelName='Author' name='author' validInput={validInput.author} isRequireInput handleChangeInput={handleChangeInput} />
-          <InputModalBook labelName='Price' name='price' validInput={validInput.price} isRequireInput handleChangeInput={handleChangeInput} />
-          <InputModalBook labelName='Stock' name='stock' validInput={validInput.stock} isRequireInput handleChangeInput={handleChangeInput} />
-          <InputModalBook labelName='Page Number' name='pageNumber' validInput={validInput.pageNumber} isRequireInput handleChangeInput={handleChangeInput} />
-          <InputModalBook labelName='Publishing Year' name='publishingYear' validInput={validInput.publishingYear} isRequireInput handleChangeInput={handleChangeInput} />
-          <InputModalBook labelName='Discount' validInput name='discount' handleChangeInput={handleChangeInput} />
+          <InputModalBook labelName='Name' name='name' validInput={validInput.name} isRequireInput handleChangeInput={handleChangeInput} value={dataBook.name} />
+          <InputModalBook labelName='Author' name='author' validInput={validInput.author} isRequireInput handleChangeInput={handleChangeInput} value={dataBook.author} />
+          <InputModalBook labelName='Price' name='price' validInput={validInput.price} isRequireInput handleChangeInput={handleChangeInput} value={dataBook.price} />
+          <InputModalBook labelName='Stock' name='stock' validInput={validInput.stock} isRequireInput handleChangeInput={handleChangeInput} value={dataBook.stock} />
+          <InputModalBook
+            labelName='Page Number'
+            name='pageNumber'
+            validInput={validInput.pageNumber}
+            isRequireInput
+            handleChangeInput={handleChangeInput}
+            value={dataBook.pageNumber}
+          />
+          <InputModalBook
+            labelName='Publishing Year'
+            name='publishingYear'
+            validInput={validInput.publishingYear}
+            isRequireInput
+            handleChangeInput={handleChangeInput}
+            value={dataBook.publishingYear}
+          />
+          <InputModalBook labelName='Discount' validInput name='discount' handleChangeInput={handleChangeInput} value={dataBook.discount || undefined} />
           <Select
             placeholder='Please select Category'
-            // value={dataUser.groupId || undefined}
+            value={dataBook.categoryId || undefined}
             status={validInput.categoryId ? '' : 'error'}
             onChange={(value) => {
               handleChangeInput('categoryId', value)
@@ -217,7 +238,7 @@ function ModalBook({ isModalBook, setIsModalBook, fetchAllBook }) {
           />
           <Select
             placeholder='Please select Supplier'
-            // value={dataUser.groupId || undefined}
+            value={dataBook.supplierId || undefined}
             status={validInput.supplierId ? '' : 'error'}
             onChange={(value) => {
               handleChangeInput('supplierId', value)
