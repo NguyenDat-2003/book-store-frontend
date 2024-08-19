@@ -1,11 +1,12 @@
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Image, Rate, Table } from 'antd'
+import { Button, Image, Rate, Table } from 'antd'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import bookAPI from '~/api/bookAPI'
 import { formatPriceVND } from '~/utils/formatPriceVND'
 import ModalDeleteBook from './ModalDeleteBook/ModalDeleteBook'
+import ModalBook from './ModalBook/ModalBook'
 
 function Book() {
   const columns = [
@@ -80,6 +81,7 @@ function Book() {
   //------- Modal Delete Book
   const [dataBookDelete, setDataBookDelete] = useState({})
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalBook, setIsModalBook] = useState(false)
 
   const handleDeleteBook = (data) => {
     setIsModalOpen(true)
@@ -116,6 +118,16 @@ function Book() {
 
   return (
     <>
+      <Button
+        className='mb-2'
+        type='primary'
+        onClick={() => {
+          setIsModalBook(true)
+          // setActionModalUser('CREATE')
+        }}
+      >
+        Create New Book
+      </Button>
       <Table
         columns={columns}
         dataSource={dataSource}
@@ -124,6 +136,7 @@ function Book() {
         }}
       />
       <ModalDeleteBook isModalOpen={isModalOpen} dataBookDelete={dataBookDelete} handleCancel={handleCancel} handleOk={handleOk} />
+      <ModalBook isModalBook={isModalBook} setIsModalBook={setIsModalBook} fetchAllBook={fetchAllBook} />
     </>
   )
 }
