@@ -16,3 +16,19 @@
 :where(.css-dev-only-do-not-override-1uq9j6g).ant-menu-light>.ant-menu .ant-menu-item-selected {
   color: red;
 }
+
+.ant-input:focus {
+  border-color      : transparent;
+  outline           : 0;
+  -webkit-box-shadow: 0 0 0 2px rgba(87, 168, 233, .2);
+  box-shadow        : 0 0 0 2px rgba(87, 168, 233, .2);
+}
+
+.ant-input:hover {
+  border-color: rgba(87, 168, 233, .2);
+}
+
+.ant-radio-checked .ant-radio-inner {
+  border-color    : red !important;
+  background-color: red !important;
+}

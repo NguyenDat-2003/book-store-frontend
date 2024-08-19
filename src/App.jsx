@@ -11,8 +11,10 @@ import ListUser from './pages/Admin/User/ListUser/ListUser'
 import NotFound from './pages/NotFound'
 import GroupRole from './pages/Admin/GroupRole/GroupRole'
 import Book from './pages/Admin/Book'
-import Order from './pages/Admin/User/Order/Order'
 import Role from './pages/Admin/GroupRole/Role'
+import User from './pages/User'
+import Profile from './pages/User/Profile/Profile'
+import Order from './pages/User/Order/Order'
 
 function App() {
   const router = createBrowserRouter([
@@ -26,8 +28,15 @@ function App() {
         { path: 'register', element: <Register /> },
         { path: 'chi-tiet-sach/:slug/:id', element: <BookDetail /> },
         { path: 'checkout', element: <Checkout /> },
-        { path: 'user/order', element: <Order /> },
         { path: 'my-cart', element: <Cart /> }
+      ]
+    },
+    {
+      path: '/',
+      element: <User />,
+      children: [
+        { path: 'user/order', element: <Order /> },
+        { path: 'user/profile', element: <Profile /> }
       ]
     },
     {
