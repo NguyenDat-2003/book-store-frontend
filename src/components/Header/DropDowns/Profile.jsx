@@ -30,10 +30,10 @@ function Profile() {
         {
           key: '0',
           label: (
-            <a href='' className='flex justify-center items-center p-1'>
+            <NavLink to='/user/profile' className='flex justify-center items-center p-1'>
               <FontAwesomeIcon icon={faUser} className='text-gray-500' />
               <span className='flex-1 ml-2 text-gray-500'>Tài khoản của tôi</span>
-            </a>
+            </NavLink>
           )
         },
         {
