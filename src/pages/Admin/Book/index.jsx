@@ -69,7 +69,7 @@ function Book() {
       render: (data) => {
         return (
           <div className='flex'>
-            <FontAwesomeIcon icon={faPenToSquare} className='mr-4 text-lg text-yellow-400 cursor-pointer' />
+            <FontAwesomeIcon icon={faPenToSquare} className='mr-4 text-lg text-yellow-400 cursor-pointer' onClick={() => hanldeUpdateBook(data)} />
             <FontAwesomeIcon icon={faTrash} className='text-lg text-red-500 cursor-pointer' onClick={() => handleDeleteBook(data)} />
           </div>
         )
@@ -81,7 +81,11 @@ function Book() {
   //------- Modal Delete Book
   const [dataBookDelete, setDataBookDelete] = useState({})
   const [isModalOpen, setIsModalOpen] = useState(false)
+
+  // ---- Modal Create Update Book
+  const [dataModalBook, setDataModalBook] = useState({})
   const [isModalBook, setIsModalBook] = useState(false)
+  const [actionModalBook, setActionModalBook] = useState('CREATE')
 
   const handleDeleteBook = (data) => {
     setIsModalOpen(true)
@@ -99,8 +103,14 @@ function Book() {
       fetchAllBook()
       toast.success('Successfully deleted book')
     } catch (error) {
-      toast.err(error.response.data.message)
+      toast.error(error.response.data.message)
     }
+  }
+
+  const hanldeUpdateBook = async (data) => {
+    setDataModalBook(data)
+    setActionModalBook('UPDATE')
+    setIsModalBook(true)
   }
 
   const fetchAllBook = async () => {
@@ -123,7 +133,7 @@ function Book() {
         type='primary'
         onClick={() => {
           setIsModalBook(true)
-          // setActionModalUser('CREATE')
+          setActionModalBook('CREATE')
         }}
       >
         Create New Book
@@ -136,7 +146,7 @@ function Book() {
         }}
       />
       <ModalDeleteBook isModalOpen={isModalOpen} dataBookDelete={dataBookDelete} handleCancel={handleCancel} handleOk={handleOk} />
-      <ModalBook isModalBook={isModalBook} setIsModalBook={setIsModalBook} fetchAllBook={fetchAllBook} />
+      <ModalBook action={actionModalBook} isModalBook={isModalBook} setIsModalBook={setIsModalBook} fetchAllBook={fetchAllBook} dataModalBook={dataModalBook} />
     </>
   )
 }
