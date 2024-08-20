@@ -1,7 +1,14 @@
 import { Button, Input, Radio, Upload } from 'antd'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
+
+import { AuthContext } from '~/context/AuthContext'
+import _ from 'lodash'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faExclamation } from '@fortawesome/free-solid-svg-icons'
+import userAPI from '~/api/userAPI'
+import handleUploadImage from '~/utils/handleUploadImage'
 
 function Profile() {
   const getBase64 = (img, callback) => {
@@ -21,9 +28,28 @@ function Profile() {
     return isJpgOrPng && isLt2M
   }
 
+  const { currentUser, updateUser } = useContext(AuthContext)
+
   const [loading, setLoading] = useState(false)
   const [imageUrl, setImageUrl] = useState()
-  const [valueRadio, setValueRadio] = useState('Nam')
+
+  const dataProfileDefault = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    sex: '',
+    avatar: ''
+  }
+  const [dataProfile, setDataProfile] = useState(dataProfileDefault)
+
+  const defaultValidInput = {
+    firstName: true,
+    lastName: true,
+    email: true,
+    phone: true
+  }
+  const [validInput, setValidInput] = useState(defaultValidInput)
 
   const uploadButton = (
     <button
@@ -43,17 +69,53 @@ function Profile() {
       </div>
     </button>
   )
+
   const handleChange = (info) => {
     if (info.file.status === 'uploading') {
       setLoading(true)
       return
     }
-    // Get this url from response in real world.
-    getBase64(info.file.originFileObj, (url) => {
+    getBase64(info.file.originFileObj, async (url) => {
       setLoading(false)
       setImageUrl(url)
+      const secure_url = await handleUploadImage(url)
+      setDataProfile({ ...dataProfile, avatar: secure_url })
     })
   }
+
+  const handleOnchangeInput = (name, value) => {
+    let _validInput = _.cloneDeep(validInput)
+    if (!value) {
+      _validInput[name] = false
+      toast.error('Vui lòng nhập thông tin')
+    } else {
+      _validInput[name] = true
+    }
+    setValidInput(_validInput)
+
+    let _dataProfile = _.cloneDeep(dataProfile)
+    _dataProfile[name] = value
+    setDataProfile(_dataProfile)
+  }
+
+  const handleSave = async () => {
+    try {
+      await userAPI.updateMe(dataProfile.id, dataProfile)
+      updateUser(dataProfile)
+      toast.success('Cập nhật thông tin thành công')
+    } catch (error) {
+      toast.error(error.response.data.messgae)
+    }
+  }
+
+  const isFormValid = () => {
+    return Object.values(validInput).some((item) => item === false)
+  }
+
+  useEffect(() => {
+    setDataProfile(currentUser)
+    setImageUrl(currentUser.avatar)
+  }, [currentUser])
 
   return (
     <>
@@ -66,27 +128,37 @@ function Profile() {
           <div className='flex flex-col basis-1/2 mr-12'>
             <div className='flex mb-4'>
               <span className='basis-2/5 text-gray-600'>Họ:</span>
-              <Input />
+              <Input
+                value={dataProfile.firstName}
+                onChange={(e) => handleOnchangeInput('firstName', e.target.value)}
+                status={!validInput['firstName'] && 'error'}
+                suffix={!validInput['firstName'] && <FontAwesomeIcon icon={faExclamation} />}
+              />
             </div>
             <div className='flex mb-4'>
               <span className='basis-2/5 text-gray-600'>Tên:</span>
-              <Input />
+              <Input
+                value={dataProfile.lastName}
+                onChange={(e) => handleOnchangeInput('lastName', e.target.value)}
+                status={!validInput['lastName'] && 'error'}
+                suffix={!validInput['lastName'] && <FontAwesomeIcon icon={faExclamation} />}
+              />
             </div>
             <div className='flex mb-4'>
               <span className='basis-2/5 text-gray-600'>Email:</span>
-              <Input />
+              <Input value={dataProfile.email} onChange={(e) => handleOnchangeInput('email', e.target.value)} />
             </div>
             <div className='flex mb-4'>
               <span className='basis-2/5 text-gray-600'>Số điện thoại:</span>
-              <Input />
+              <Input value={dataProfile.phone} onChange={(e) => handleOnchangeInput('phone', e.target.value)} />
             </div>
             <div className='flex'>
               <span className='basis-2/5 text-gray-600'>Giới tính:</span>
               <div>
                 <Radio.Group
-                  value={valueRadio}
+                  value={dataProfile.sex}
                   onChange={(e) => {
-                    setValueRadio(e.target.value)
+                    setDataProfile({ ...dataProfile, sex: e.target.value })
                   }}
                 >
                   <Radio value='Nam'>Nam</Radio>
@@ -114,7 +186,7 @@ function Profile() {
                     style={{
                       height: '100%',
                       width: '100%',
-                      objectFit: 'contain',
+                      objectFit: 'cover',
                       borderRadius: '50px'
                     }}
                   />
@@ -129,7 +201,7 @@ function Profile() {
           </div>
         </div>
         <p className='pl-24'>
-          <Button danger type='primary' className='p-4 !bg-red-600'>
+          <Button disabled={isFormValid()} danger type='primary' className='p-4 !bg-red-600' onClick={handleSave}>
             LƯU
           </Button>
         </p>

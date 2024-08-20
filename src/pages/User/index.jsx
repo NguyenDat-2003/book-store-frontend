@@ -1,5 +1,5 @@
 import { BellOutlined, ContainerOutlined, UserOutlined } from '@ant-design/icons'
-import { Menu } from 'antd'
+import { Avatar, Menu } from 'antd'
 import { useContext } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 
@@ -52,9 +52,13 @@ function User() {
           <div className='grid grid-cols-5 gap-4'>
             <div>
               <div className='bg-white rounded-lg'>
-                <p className='font-medium py-2 text-center'>
-                  {currentUser.firstName} {currentUser.lastName}
-                </p>
+                <div className='font-medium p-4 text-center flex items-center '>
+                  {!currentUser.avatar ? <Avatar size='large' icon={<UserOutlined />} /> : <img src={currentUser.avatar} className='h-10 w-10 rounded-full object-cover' />}
+                  <p className='ml-2 text-sm'>
+                    {currentUser.firstName} {currentUser.lastName} <br />
+                    <span className='text-gray-400'>{currentUser.email}</span>
+                  </p>
+                </div>
                 <div>
                   <Menu
                     onClick={(item) => {
