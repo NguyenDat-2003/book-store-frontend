@@ -8,6 +8,7 @@ import { categoryAPI } from '~/api/categoryAPI'
 import { supplierAPI } from '~/api/supplierAPI'
 import InputModalBook from './InputModalBook/InputModalBook'
 import bookAPI from '~/api/bookAPI'
+import handleUploadImage from '~/utils/handleUploadImage'
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader()
@@ -58,33 +59,16 @@ function ModalBook({ isModalBook, setIsModalBook, fetchAllBook, action, dataModa
   }
   const [validInput, setValidInput] = useState(validInputDefault)
 
-  const handleUpload = async (file) => {
-    const formData = new FormData()
-    formData.append('file', file)
-    formData.append('upload_preset', 'book_store_web')
-
-    try {
-      const response = await fetch('https://api.cloudinary.com/v1_1/datdev/image/upload', {
-        method: 'POST',
-        body: formData
-      })
-
-      const data = await response.json()
-      setImageUrl(data.secure_url)
-      setDataBook({ ...dataBook, image: data.secure_url })
-    } catch (error) {
-      toast.error('Upload failed')
-    }
-  }
-
   const handleChange = (info) => {
     if (info.file.status === 'uploading') {
       setLoading(true)
       return
     }
-    getBase64(info.file.originFileObj, async (base64Image) => {
+    getBase64(info.file.originFileObj, async (url) => {
       setLoading(false)
-      await handleUpload(base64Image)
+      setImageUrl(url)
+      const secure_url = await handleUploadImage(url)
+      setDataBook({ ...dataBook, image: secure_url })
     })
   }
 
