@@ -28,17 +28,15 @@ function BookDetail() {
       try {
         const res = await bookAPI.getBook(id)
         setBook(res)
-        if (currentUser) {
-          const resRecommend = await cartAPI.getRecommend(currentUser.id)
-          const newResRecommend = []
-          await Promise.all(
-            resRecommend.map(async (id) => {
-              const book = await bookAPI.getBook(id)
-              newResRecommend.push(book)
-            })
-          )
-          setListBooksRecommend(newResRecommend)
-        }
+        const resRecommend = await cartAPI.getRecommend(currentUser?.id)
+        const newResRecommend = []
+        await Promise.all(
+          resRecommend.map(async (id) => {
+            const book = await bookAPI.getBook(id)
+            newResRecommend.push(book)
+          })
+        )
+        setListBooksRecommend(newResRecommend)
       } catch (error) {
         console.log(error)
       }
@@ -164,7 +162,7 @@ function BookDetail() {
             </div>
           </div>
         </div>
-        {currentUser && listBooksRecommend.length > 0 && <ListBook listBooks={listBooksRecommend} noPaginate title='Fahasa gợi ý' iconTitle={<OpenAIOutlined />} />}
+        {listBooksRecommend?.length > 0 && <ListBook listBooks={listBooksRecommend} noPaginate title='Fahasa gợi ý' iconTitle={<OpenAIOutlined />} />}
       </div>
     </>
   )

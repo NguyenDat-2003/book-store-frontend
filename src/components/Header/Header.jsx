@@ -6,8 +6,37 @@ import Notification from './DropDowns/Notification'
 import Cart from './DropDowns/Cart'
 import Profile from './DropDowns/Profile'
 import { NavLink } from 'react-router-dom'
+import Tippy from '@tippyjs/react/headless'
+import { AppstoreOutlined } from '@ant-design/icons'
+import { useContext, useEffect, useState } from 'react'
+import { AuthContext } from '~/context/AuthContext'
+import cartAPI from '~/api/cartAPI'
+import bookAPI from '~/api/bookAPI'
 
 function Header() {
+  const { currentUser } = useContext(AuthContext)
+  const [listBooksRecommend, setListBooksRecommend] = useState([])
+
+  const fetchDataRecommendBook = async () => {
+    try {
+      const resRecommend = await cartAPI.getRecommend(currentUser?.id)
+      const newResRecommend = []
+      await Promise.all(
+        resRecommend.map(async (id) => {
+          const book = await bookAPI.getBook(id)
+          newResRecommend.push(book)
+        })
+      )
+      setListBooksRecommend(newResRecommend)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchDataRecommendBook()
+  }, [])
+
   return (
     <>
       <header className='flex flex-col text-white w-screen'>
@@ -21,15 +50,47 @@ function Header() {
                 <img src={fahasa} alt='none' />
               </NavLink>
             </div>
-            <div className='flex-1 mx-6 w-full relative flex items-center'>
-              <input
-                className='w-full h-11 rounded-lg pl-8 pr-20 pb-1 text-gray-800 border-solid border-2 border-gray-200 outline-none'
-                type='text'
-                placeholder='Tìm kiếm sách...'
-              />
-              <button className=' w-20 h-8 bg-red-600 p-1 rounded-lg absolute right-1'>
-                <FontAwesomeIcon icon={faMagnifyingGlass} />
-              </button>
+
+            <div className='flex-1 mx-6 w-full'>
+              <div className='flex items-center relative'>
+                <Tippy
+                  placement='bottom-start'
+                  interactive={true}
+                  render={(attrs) => (
+                    <div tabIndex='-1' style={{ width: '700px' }} className='bg-white p-6 rounded-md shadow-2xl text-gray-700' {...attrs}>
+                      <p className='text-lg font-medium'>
+                        <AppstoreOutlined className='mr-2' />
+                        Fahasa gợi ý cho bạn
+                      </p>
+                      <div className='grid grid-cols-3'>
+                        {listBooksRecommend?.length > 0 &&
+                          listBooksRecommend.map((book) => {
+                            return (
+                              <>
+                                <NavLink to={`/chi-tiet-sach/${book.slug}/${book.id}`}>
+                                  <div className='flex items-center mt-4 hover:shadow-md rounded p-2'>
+                                    <img src={book.image} alt='' className='h-20 w-16 mr-4' />
+                                    <p className='text-sm line-clamp-2'>{book.name}</p>
+                                  </div>
+                                </NavLink>
+                              </>
+                            )
+                          })}
+                      </div>
+                    </div>
+                  )}
+                >
+                  <input
+                    className='w-full h-11 rounded-lg pl-8 pr-20 pb-1 text-gray-800 border-solid border-2 border-gray-200 outline-none'
+                    type='text'
+                    placeholder='Tìm kiếm sách...'
+                  />
+                </Tippy>
+
+                <button className=' w-20 h-8 bg-red-600 p-1 rounded-lg absolute right-1'>
+                  <FontAwesomeIcon icon={faMagnifyingGlass} />
+                </button>
+              </div>
             </div>
             <div className='flex justify-center'>
               <Notification />
