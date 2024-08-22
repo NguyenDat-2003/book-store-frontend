@@ -12,6 +12,7 @@ import { capitalizeWords } from '~/utils/capitalizeWords'
 import { formatPriceVND } from '~/utils/formatPriceVND'
 import CountQuantity from '../CountQuantity'
 import ListBook from '~/pages/Home/ListBook/ListBook'
+import Review from './Review/Review'
 
 function BookDetail() {
   const { id } = useParams()
@@ -163,6 +164,7 @@ function BookDetail() {
           </div>
         </div>
         {listBooksRecommend?.length > 0 && <ListBook listBooks={listBooksRecommend} noPaginate title='Fahasa gợi ý' iconTitle={<OpenAIOutlined />} />}
+        <Review />
       </div>
     </>
   )
