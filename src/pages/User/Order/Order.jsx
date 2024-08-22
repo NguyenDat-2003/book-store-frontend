@@ -7,6 +7,7 @@ import { toast } from 'react-toastify'
 import { formatPriceVND } from '~/utils/formatPriceVND'
 import cartAPI from '~/api/cartAPI'
 import { AuthContext } from '~/context/AuthContext'
+import { Empty } from 'antd'
 
 function Order() {
   const { currentUser } = useContext(AuthContext)
@@ -28,7 +29,7 @@ function Order() {
   return (
     <>
       <div className='flex flex-col'>
-        {listOrder &&
+        {listOrder?.length > 0 ? (
           listOrder.map((item) => {
             return (
               <>
@@ -80,7 +81,10 @@ function Order() {
                 </div>
               </>
             )
-          })}
+          })
+        ) : (
+          <Empty />
+        )}
       </div>
     </>
   )

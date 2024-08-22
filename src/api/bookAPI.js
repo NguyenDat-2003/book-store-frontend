@@ -5,6 +5,10 @@ const bookAPI = {
     const url = `/book/read?page=${page}&limit=${limit}`
     return axiosClient.get(url)
   },
+  searchBook: (name) => {
+    const url = `/book/read?name=${name}`
+    return axiosClient.get(url)
+  },
   getBook: (id) => {
     const url = `/book/${id}`
     return axiosClient.get(url)
