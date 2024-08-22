@@ -7,15 +7,22 @@ import Cart from './DropDowns/Cart'
 import Profile from './DropDowns/Profile'
 import { NavLink } from 'react-router-dom'
 import Tippy from '@tippyjs/react/headless'
-import { AppstoreOutlined } from '@ant-design/icons'
+import { AppstoreOutlined, RiseOutlined } from '@ant-design/icons'
 import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '~/context/AuthContext'
 import cartAPI from '~/api/cartAPI'
 import bookAPI from '~/api/bookAPI'
+import { toast } from 'react-toastify'
+import useDebounce from '~/hooks/useDebounce'
+import { Empty } from 'antd'
 
 function Header() {
   const { currentUser } = useContext(AuthContext)
-  const [listBooksRecommend, setListBooksRecommend] = useState([])
+  const [listBooksSearch, setListBooksSearch] = useState([])
+  const [searchValue, setSearchValue] = useState('')
+  const [showResult, setShowResult] = useState(false)
+
+  const valueSearchDebounce = useDebounce(searchValue, 500)
 
   const fetchDataRecommendBook = async () => {
     try {
@@ -27,15 +34,43 @@ function Header() {
           newResRecommend.push(book)
         })
       )
-      setListBooksRecommend(newResRecommend)
+      setListBooksSearch(newResRecommend)
     } catch (error) {
-      console.log(error)
+      toast.error(error.response.data.message)
     }
+  }
+
+  const handleChange = (e) => {
+    const searchValue = e.target.value
+    if (!searchValue.startsWith(' ')) {
+      setSearchValue(searchValue)
+    }
+  }
+
+  const handleHideResult = () => {
+    setShowResult(false)
   }
 
   useEffect(() => {
     fetchDataRecommendBook()
   }, [])
+
+  useEffect(() => {
+    if (!valueSearchDebounce.trim()) {
+      fetchDataRecommendBook()
+      return
+    }
+
+    const fetchListBooksSearch = async () => {
+      try {
+        const res = await bookAPI.searchBook(valueSearchDebounce)
+        setListBooksSearch(res)
+      } catch (error) {
+        toast.error(error.response.data.message)
+      }
+    }
+    fetchListBooksSearch()
+  }, [valueSearchDebounce])
 
   return (
     <>
@@ -55,28 +90,45 @@ function Header() {
               <div className='flex items-center relative'>
                 <Tippy
                   placement='bottom-start'
-                  interactive={true}
+                  interactive
+                  visible={showResult}
+                  onClickOutside={handleHideResult}
                   render={(attrs) => (
                     <div tabIndex='-1' style={{ width: '700px' }} className='bg-white p-6 rounded-md shadow-2xl text-gray-700' {...attrs}>
-                      <p className='text-lg font-medium'>
-                        <AppstoreOutlined className='mr-2' />
-                        Fahasa gợi ý cho bạn
-                      </p>
-                      <div className='grid grid-cols-3'>
-                        {listBooksRecommend?.length > 0 &&
-                          listBooksRecommend.map((book) => {
-                            return (
+                      {listBooksSearch?.length > 0 ? (
+                        <>
+                          <p className='text-lg font-medium'>
+                            {!valueSearchDebounce ? (
                               <>
-                                <NavLink to={`/chi-tiet-sach/${book.slug}/${book.id}`}>
-                                  <div className='flex items-center mt-4 hover:shadow-md rounded p-2'>
-                                    <img src={book.image} alt='' className='h-20 w-16 mr-4' />
-                                    <p className='text-sm line-clamp-2'>{book.name}</p>
-                                  </div>
-                                </NavLink>
+                                <AppstoreOutlined className='mr-2' />
+                                Fahasa gợi ý cho bạn
                               </>
-                            )
-                          })}
-                      </div>
+                            ) : (
+                              <>
+                                <RiseOutlined className='mr-2' />
+                                Sản phẩm
+                              </>
+                            )}
+                          </p>
+                          <div className='grid grid-cols-2'>
+                            {listBooksSearch?.length > 0 &&
+                              listBooksSearch.map((book) => {
+                                return (
+                                  <>
+                                    <NavLink to={`/chi-tiet-sach/${book.slug}/${book.id}`}>
+                                      <div className='flex items-center mt-4 hover:shadow-md rounded p-2'>
+                                        <img src={book.image} alt='' className='h-20 w-18 mr-4' />
+                                        <p className='text-sm line-clamp-2'>{book.name}</p>
+                                      </div>
+                                    </NavLink>
+                                  </>
+                                )
+                              })}
+                          </div>
+                        </>
+                      ) : (
+                        <Empty />
+                      )}
                     </div>
                   )}
                 >
@@ -84,6 +136,9 @@ function Header() {
                     className='w-full h-11 rounded-lg pl-8 pr-20 pb-1 text-gray-800 border-solid border-2 border-gray-200 outline-none'
                     type='text'
                     placeholder='Tìm kiếm sách...'
+                    value={searchValue}
+                    onChange={(e) => handleChange(e)}
+                    onFocus={() => setShowResult(true)}
                   />
                 </Tippy>
 
