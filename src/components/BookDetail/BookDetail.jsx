@@ -112,8 +112,8 @@ function BookDetail() {
                 </span>
               </div>
               <div>
-                <Rate allowHalf defaultValue={book.ratingsAverage || 3.5} disabled className='text-sm' />
-                <span className='text-yellow-400 ml-2 pr-2 border-r-2'>({book.totalRating} đánh giá)</span>
+                <Rate allowHalf value={book.ratingsAverage} disabled className='text-sm' />
+                <span className='text-yellow-400 ml-2 pr-2 border-r-2'>({book.totalRating || 0} đánh giá)</span>
                 <span className='text-gray-400 ml-2'>
                   Đã bán: <span className='text-gray-600'>{book.sold || 0}</span>
                 </span>
@@ -164,7 +164,7 @@ function BookDetail() {
           </div>
         </div>
         {listBooksRecommend?.length > 0 && <ListBook listBooks={listBooksRecommend} noPaginate title='Fahasa gợi ý' iconTitle={<OpenAIOutlined />} />}
-        <Review />
+        <Review book={book} setBook={setBook} />
       </div>
     </>
   )
