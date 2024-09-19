@@ -52,18 +52,6 @@ function Register() {
       setisLoading(false)
     }
   }
-  const prefixSelector = (
-    <Form.Item name='prefix' noStyle>
-      <Select
-        style={{
-          width: 70
-        }}
-      >
-        <Option value='84'>+84</Option>
-        <Option value='86'>+86</Option>
-      </Select>
-    </Form.Item>
-  )
 
   return (
     <div className='flex justify-center items-center py-22'>
@@ -87,7 +75,8 @@ function Register() {
               required: true,
               message: 'Vui lòng nhập họ tên!',
               whitespace: true
-            }
+            },
+            { pattern: new RegExp(/[a-zA-Z]/g), message: 'Chỉ nhập ký tự' }
           ]}
         >
           <Input />
@@ -100,22 +89,23 @@ function Register() {
               required: true,
               message: 'Vui lòng nhập họ tên!',
               whitespace: true
-            }
+            },
+            { pattern: new RegExp(/[a-zA-Z]/g), message: 'Chỉ nhập ký tự' }
           ]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           name='email'
-          label='E-mail'
+          label='Email'
           rules={[
             {
               type: 'email',
-              message: 'Vui lòng nhập đúng định dạng E-mail!'
+              message: 'Vui lòng nhập đúng định dạng Email!'
             },
             {
               required: true,
-              message: 'Vui lòng nhập E-mail!'
+              message: 'Vui lòng nhập Email!'
             }
           ]}
         >
@@ -134,9 +124,15 @@ function Register() {
         >
           <Input.Password />
         </Form.Item>
-        <Form.Item name='phone' label='Số điện thoại'>
+        <Form.Item
+          name='phone'
+          label='Số điện thoại'
+          rules={[
+            { pattern: new RegExp(/^[0-9]*$/g), message: 'Chỉ được nhập số' },
+            { max: 10, message: 'Số điện thoại không vượt quá 10 ký tự' }
+          ]}
+        >
           <Input
-            addonBefore={prefixSelector}
             style={{
               width: '100%'
             }}

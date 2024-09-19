@@ -50,18 +50,18 @@ function LogIn() {
                 rules={[
                   {
                     required: true,
-                    message: 'Please input your Username!'
+                    message: 'Vui lòng nhập Email'
                   }
                 ]}
               >
-                <Input prefix={<UserOutlined className='site-form-item-icon py-2' />} placeholder='Username' />
+                <Input prefix={<UserOutlined className='site-form-item-icon py-2' />} placeholder='Email' />
               </Form.Item>
               <Form.Item
                 name='password'
                 rules={[
                   {
                     required: true,
-                    message: 'Please input your Password!'
+                    message: 'Vui lòng nhập mật khẩu'
                   }
                 ]}
               >
