@@ -7,7 +7,7 @@ import Cart from './DropDowns/Cart'
 import Profile from './DropDowns/Profile'
 import { NavLink } from 'react-router-dom'
 import Tippy from '@tippyjs/react/headless'
-import { AppstoreOutlined, RiseOutlined } from '@ant-design/icons'
+import { AppstoreOutlined, RiseOutlined, SettingOutlined } from '@ant-design/icons'
 import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '~/context/AuthContext'
 import cartAPI from '~/api/cartAPI'
@@ -151,6 +151,14 @@ function Header() {
               <Notification />
               <Cart />
               <Profile />
+              {currentUser && currentUser.groupId !== 1 && (
+                <NavLink to='/dash-board/book'>
+                  <div className='text-gray-500 text-sm flex flex-col  items-center mt-2'>
+                    <SettingOutlined />
+                    <span>Trang quản trị</span>
+                  </div>
+                </NavLink>
+              )}
             </div>
           </div>
         </div>
