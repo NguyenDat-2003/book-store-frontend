@@ -79,7 +79,7 @@ function Role() {
                         status={value.isValidUrl ? undefined : 'error'}
                         suffix={!value.isValidUrl && <FontAwesomeIcon icon={faExclamation} />}
                         value={value.url}
-                        onChange={(e) => handleOnchangeInput('url', e.target.value, key)}
+                        onChange={(e) => handleOnchangeInput('url', e.target.value.trim(), key)}
                       />
                     </div>
                     <div className='basis-1/3 mr-4'>

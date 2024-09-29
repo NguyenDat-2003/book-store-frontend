@@ -104,7 +104,7 @@ function Profile() {
       updateUser(dataProfile)
       toast.success('Cập nhật thông tin thành công')
     } catch (error) {
-      toast.error(error.response.data.messgae)
+      toast.error(error.response.data.message)
     }
   }
 

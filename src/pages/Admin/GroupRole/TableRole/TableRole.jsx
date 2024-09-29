@@ -107,7 +107,7 @@ const TableRole = forwardRef((props, ref) => {
             <Input
               status={validInputUrl ? '' : 'error'}
               suffix={!validInputUrl && <FontAwesomeIcon icon={faExclamation} />}
-              onChange={(e) => setDataModalRole({ ...dataModalRole, url: e.target.value })}
+              onChange={(e) => setDataModalRole({ ...dataModalRole, url: e.target.value.trim() })}
               value={dataModalRole.url}
             />
           </div>
