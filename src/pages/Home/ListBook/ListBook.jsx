@@ -13,10 +13,10 @@ function ListBook({ listBooks, setCurrentPage, totalRecords, currentLimit, noPag
       </p>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 bg-white p-4 rounded-l-lg'>
         {listBooks &&
-          listBooks.map((book) => {
+          listBooks.map((book, index) => {
             return (
               <>
-                <NavLink to={`/chi-tiet-sach/${book.slug}/${book.id}`} className='rounded-lg hover:shadow-md'>
+                <NavLink key={index} to={`/chi-tiet-sach/${book.slug}/${book.id}`} className='rounded-lg hover:shadow-md'>
                   <Badge.Ribbon text={`-${book.discount}%`} color='red'>
                     <div className='p-4'>
                       <div>

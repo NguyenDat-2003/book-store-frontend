@@ -32,3 +32,8 @@
   border-color    : red !important;
   background-color: red !important;
 }
+
+.ant-tabs-nav-list {
+  flex           : 1;
+  justify-content: space-around;
+}

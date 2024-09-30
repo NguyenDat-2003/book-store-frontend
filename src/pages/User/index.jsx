@@ -47,7 +47,7 @@ function User() {
   return (
     <>
       <Header />
-      <div className='bg-gray-100 '>
+      <div className='bg-gray-100 min-h-96'>
         <div className='w-10/12 2xl:w-8/12 container mx-auto p-4'>
           <div className='grid grid-cols-5 gap-4'>
             <div>
