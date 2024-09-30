@@ -142,10 +142,10 @@ function Footer() {
               </div>
             </div>
             <div className='mt-6 grid grid-cols-4 gap-4'>
-              {imagesPTTT.map((item) => {
+              {imagesPTTT.map((item, index) => {
                 return (
                   <>
-                    <div>
+                    <div key={index}>
                       <img className='w-24 h-12 object-contain' src={item.img} />
                     </div>
                   </>

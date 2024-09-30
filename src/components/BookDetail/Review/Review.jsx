@@ -133,7 +133,7 @@ function Review({ book, setBook }) {
                 listReviews.map((item) => {
                   return (
                     <>
-                      <div className=' mb-4'>
+                      <div key={item.id} className=' mb-4'>
                         <div className='flex items-center mb-2'>
                           <img src={item.User.avatar} className='h-10 w-10 rounded-full object-cover mr-2' />
                           <div className='flex flex-col text-xs text-gray-500'>

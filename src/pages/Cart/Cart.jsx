@@ -82,7 +82,7 @@ function Cart() {
                     const priceAfterDiscount = (item.price * (100 - item.discount)) / 100
                     return (
                       <>
-                        <div className='flex items-center text-sm  py-2 bg-white rounded-lg mb-2'>
+                        <div key={item.id} className='flex items-center text-sm  py-2 bg-white rounded-lg mb-2'>
                           <div className='basis-3/5 flex mr-8'>
                             <img src={item.image} alt='' className='h-32 mr-4' />
                             <div className='flex flex-col'>

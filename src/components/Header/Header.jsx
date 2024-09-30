@@ -115,7 +115,7 @@ function Header() {
                               listBooksSearch.map((book) => {
                                 return (
                                   <>
-                                    <NavLink to={`/chi-tiet-sach/${book.slug}/${book.id}`}>
+                                    <NavLink key={book.id} to={`/chi-tiet-sach/${book.slug}/${book.id}`}>
                                       <div className='flex items-center mt-4 hover:shadow-md rounded p-2'>
                                         <img src={book.image} alt='' className='h-20 w-18 mr-4' />
                                         <p className='text-sm line-clamp-2'>{book.name}</p>
