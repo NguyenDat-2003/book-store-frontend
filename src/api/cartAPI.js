@@ -22,15 +22,19 @@ const cartAPI = {
     return axiosClient.delete(url)
   },
   // --- Đặt hàng các sản phẩm trong giỏ hàng
-  orderCart: (userId, reqBody) => {
+  orderCart: (reqBody) => {
     const url = '/user/order'
     return axiosClient.post(url, reqBody)
   },
-  getMyOrder: (userId) => {
+  getMyOrder: () => {
     const url = '/user/my-order'
     return axiosClient.get(url)
   },
-  getRecommend: (userId) => {
+  getMyOrderByStatus: (status) => {
+    const url = `/user/my-order-status/${status}`
+    return axiosClient.get(url)
+  },
+  getRecommend: () => {
     const url = '/user/recommend'
     return axiosClient.post(url, { numNeighbors: 3, numRecommendations: 10 })
   }

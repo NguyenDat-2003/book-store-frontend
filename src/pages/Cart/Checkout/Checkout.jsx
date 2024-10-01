@@ -46,7 +46,7 @@ function Checkout() {
 
   const onFinish = async (values) => {
     try {
-      const res = await cartAPI.orderCart(currentUser.id, values)
+      const res = await cartAPI.orderCart({ ...values, status: 1 })
       toast.success(res.message)
       countQuantityCart(currentUser.id)
       navigate('/')

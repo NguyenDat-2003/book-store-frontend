@@ -37,3 +37,8 @@
   flex           : 1;
   justify-content: space-around;
 }
+
+.ant-tabs-nav {
+  background-color: white;
+  border-radius   : 8px;
+}
