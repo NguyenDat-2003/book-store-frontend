@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 import userAPI from '~/api/userAPI'
 import { formatPriceVND } from '~/utils/formatPriceVND'
 
-function ListOrderItem({ item, statusMessage, fetchDataListOrder }) {
+function ListOrderItem({ item, statusMessage, fetchDataListOrder, onHideBtnConfirmOrder }) {
   const confirmOrder = async (status, orderId) => {
     try {
       await userAPI.updateStatusOrder({ status, id: orderId })
@@ -61,7 +61,7 @@ function ListOrderItem({ item, statusMessage, fetchDataListOrder }) {
 
         <div className='mt-4 border-t border-gray-200'>
           <div className='flex justify-end items-center mt-4'>
-            {item.status === 3 && (
+            {item.status === 3 && !onHideBtnConfirmOrder && (
               <Button onClick={() => confirmOrder(4, item.id)} danger type='primary' className='!bg-red-600 mr-4'>
                 ĐÃ NHẬN ĐƯỢC HÀNG
               </Button>

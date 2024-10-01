@@ -46,3 +46,7 @@
 .ant-tabs-tab.ant-tabs-tab-active span {
   color: #d22826;
 }
+
+.ant-menu-item.ant-menu-item-selected span {
+  color: #d22826;
+}
