@@ -15,6 +15,7 @@ import Role from './pages/Admin/GroupRole/Role'
 import User from './pages/User'
 import Profile from './pages/User/Profile/Profile'
 import Order from './pages/User/Order/Order'
+import AdminOrder from './pages/Admin/Order'
 
 function App() {
   const router = createBrowserRouter([
@@ -45,6 +46,7 @@ function App() {
       children: [
         { path: 'dash-board/book', element: <Book /> },
         { path: 'dash-board/user', element: <ListUser /> },
+        { path: 'dash-board/order', element: <AdminOrder /> },
         { path: 'dash-board/role', element: <Role /> },
         { path: 'dash-board/permission', element: <GroupRole /> }
       ]

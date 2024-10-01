@@ -26,6 +26,15 @@ function Order() {
     return statusMap
   }
 
+  const fetchDataListOrder = async () => {
+    try {
+      const res = await cartAPI.getMyOrder(currentUser.id)
+      setListOrderByStatus(categorizeOrders(res))
+    } catch (error) {
+      toast(error.response?.data?.message)
+    }
+  }
+
   let items = listItems.map((item) => {
     const hasOrdersInStatus =
       (item.key == 1 && listOrderByStatus[item.key]?.length > 0) ||
@@ -40,7 +49,7 @@ function Order() {
       ) : (
         <span className='text-sm'>{item.label}</span>
       ),
-      children: <ListOrder listOrder={item.key === '0' ? listOrderByStatus[4] : listOrderByStatus[item.key]} statusMessage={item.label} />
+      children: <ListOrder fetchDataListOrder={fetchDataListOrder} listOrder={item.key === '0' ? listOrderByStatus[4] : listOrderByStatus[item.key]} statusMessage={item.label} />
     }
   })
 
@@ -54,20 +63,12 @@ function Order() {
   }
 
   useEffect(() => {
-    const fetchDataListOrder = async () => {
-      try {
-        const res = await cartAPI.getMyOrder(currentUser.id)
-        setListOrderByStatus(categorizeOrders(res))
-      } catch (error) {
-        toast(error.response?.data?.message)
-      }
-    }
     fetchDataListOrder()
   }, [currentUser])
 
   return (
     <ConfigProvider theme={{ components: { Tabs: { colorPrimary: '#d22826', algorithm: true } } }}>
-      <Tabs defaultActiveKey='0' size='large' items={items} onChange={onChange} />
+      <Tabs defaultActiveKey='0' items={items} onChange={onChange} />
     </ConfigProvider>
   )
 }

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBook, faBug, faCodeCompare, faHome, faUserSecret } from '@fortawesome/free-solid-svg-icons'
 import { faUser } from '@fortawesome/free-regular-svg-icons'
+import { faRectangleList } from '@fortawesome/free-regular-svg-icons'
 
 function SideMenu() {
   const navigate = useNavigate()
@@ -21,6 +22,11 @@ function SideMenu() {
       key: 'dash-board/user',
       icon: <FontAwesomeIcon icon={faUser} />,
       label: 'User'
+    },
+    {
+      key: 'dash-board/order',
+      icon: <FontAwesomeIcon icon={faRectangleList} />,
+      label: 'Order'
     },
     {
       key: 'dash-board/role',

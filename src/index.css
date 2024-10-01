@@ -42,3 +42,7 @@
   background-color: white;
   border-radius   : 8px;
 }
+
+.ant-tabs-tab.ant-tabs-tab-active span {
+  color: #d22826;
+}

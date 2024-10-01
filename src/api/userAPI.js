@@ -24,6 +24,14 @@ const userAPI = {
   updateMe: (userId, data) => {
     const url = '/user/update-me'
     return axiosClient.put(url, data)
+  },
+  getAllOrders: () => {
+    const url = '/user/orders'
+    return axiosClient.get(url)
+  },
+  updateStatusOrder: (reqBody) => {
+    const url = '/user/update-status'
+    return axiosClient.put(url, reqBody)
   }
 }
 
