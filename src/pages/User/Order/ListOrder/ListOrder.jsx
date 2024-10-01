@@ -1,7 +1,7 @@
 import { Empty } from 'antd'
 import ListOrderItem from './ListOrderItem/ListOrderItem'
 
-function ListOrder({ listOrder, statusMessage, fetchDataListOrder }) {
+function ListOrder({ listOrder, statusMessage, fetchDataListOrder, onHideBtnConfirmOrder }) {
   return (
     <>
       <div className='flex flex-col'>
@@ -9,7 +9,7 @@ function ListOrder({ listOrder, statusMessage, fetchDataListOrder }) {
           listOrder.map((item) => {
             return (
               <>
-                <ListOrderItem fetchDataListOrder={fetchDataListOrder} item={item} statusMessage={statusMessage} />
+                <ListOrderItem fetchDataListOrder={fetchDataListOrder} item={item} statusMessage={statusMessage} onHideBtnConfirmOrder={onHideBtnConfirmOrder} />
               </>
             )
           })

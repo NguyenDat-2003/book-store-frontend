@@ -1,10 +1,11 @@
-import { Button, Dropdown, Table, Tag } from 'antd'
+import { Button, Dropdown, Modal, Table, Tag } from 'antd'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { format } from 'date-fns'
 
 import userAPI from '~/api/userAPI'
 import { formatPriceVND } from '~/utils/formatPriceVND'
+import ListOrder from '~/pages/User/Order/ListOrder/ListOrder'
 
 function Order() {
   const items = [
@@ -39,6 +40,8 @@ function Order() {
       )
     }
   ]
+
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const columns = [
     {
@@ -124,7 +127,7 @@ function Order() {
       render: (data) => {
         return (
           <>
-            <Button type='primary' className='mr-2 !bg-cyan-500'>
+            <Button type='primary' onClick={() => displayDetailOrder(data)} className='mr-2 !bg-cyan-500'>
               Xem chi tiết
             </Button>
             <Dropdown
@@ -134,7 +137,7 @@ function Order() {
               placement='bottomRight'
               trigger={['click']}
             >
-              <Button disabled={data.status == 4 && 'true'} onClick={() => setMyOrderId(data.id)}>
+              <Button disabled={(data.status == 4 && 'true') || (data.status == 5 && 'true')} onClick={() => setMyOrderId(data.id)}>
                 Cập nhật trạng thái
               </Button>
             </Dropdown>
@@ -145,6 +148,7 @@ function Order() {
   ]
 
   const [dataSource, setDataSource] = useState([])
+  const [listDetailOrder, setListDetailOrder] = useState([])
   const [myOrderId, setMyOrderId] = useState('')
 
   const updateStatusOrder = async (status, orderId) => {
@@ -154,6 +158,20 @@ function Order() {
     } catch (error) {
       toast.error(error.response.data.message)
     }
+  }
+
+  const displayDetailOrder = (data) => {
+    const listOrder = []
+    listOrder.push(data)
+    setListDetailOrder(listOrder)
+    setIsModalOpen(true)
+  }
+
+  const handleCancel = () => {
+    setIsModalOpen(false)
+  }
+  const handleOK = () => {
+    setIsModalOpen(false)
   }
 
   const fetchAllOrders = async () => {
@@ -172,6 +190,11 @@ function Order() {
   return (
     <>
       <Table columns={columns} dataSource={dataSource} />
+      <Modal title='Chi tiết đơn hàng' width='50%' open={isModalOpen} onCancel={handleCancel} onOk={handleOK}>
+        <div>
+          <ListOrder listOrder={listDetailOrder} statusMessage='' onHideBtnConfirmOrder />
+        </div>
+      </Modal>
     </>
   )
 }
