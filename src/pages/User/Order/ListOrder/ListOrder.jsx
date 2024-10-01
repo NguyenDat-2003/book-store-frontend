@@ -4,8 +4,9 @@ import { format } from 'date-fns'
 
 import { formatPriceVND } from '~/utils/formatPriceVND'
 import { Empty } from 'antd'
+import { NavLink } from 'react-router-dom'
 
-function ListOrder({ listOrder }) {
+function ListOrder({ listOrder, statusMessage }) {
   return (
     <>
       <div className='flex flex-col'>
@@ -18,13 +19,14 @@ function ListOrder({ listOrder }) {
                     <span className='text-sm'>
                       Ngày đặt hàng: <span className='font-medium'>{format(item.createdAt, 'dd-MM-yyyy HH:mm:ss')}</span>
                     </span>
-
                     <div>
-                      <span className='text-emerald-600 mb-1 pr-2 text-sm border-r-2'>
-                        <FontAwesomeIcon icon={faTruck} className='mr-2' />
-                        Đặt hàng thành công
-                      </span>
-                      <span className='text-red-600 ml-2'>HOÀN THÀNH</span>
+                      {item.status === 4 && (
+                        <span className='text-emerald-600 mb-1 pr-2 text-sm border-r-2'>
+                          <FontAwesomeIcon icon={faTruck} className='mr-2' />
+                          Đặt hàng thành công
+                        </span>
+                      )}
+                      <span className='text-red-600 ml-2 font-medium'>{statusMessage.toUpperCase()}</span>
                     </div>
                   </div>
                   {item.Books &&
@@ -32,19 +34,21 @@ function ListOrder({ listOrder }) {
                       const priceAfterDiscount = (element.price * (100 - element.discount)) / 100
                       return (
                         <>
-                          <div className='mt-4 border-t border-gray-200'>
-                            <div className='flex py-2 items-center'>
-                              <img src={element.image} alt='' className='h-20 mr-4' />
-                              <a href='' className='basis-2/3 text-lg text-gray-600'>
-                                {element.name}
-                              </a>
-                              <span className='basis-1/5'>x{element.Book_Order.quantity}</span>
-                              <div>
-                                <span className='line-through text-gray-500 mr-2 text-sm'>{formatPriceVND(element.price)}</span>
-                                <span className='font-medium text-red-600'>{formatPriceVND(priceAfterDiscount)}</span>
+                          <NavLink key={element.id} to={`/chi-tiet-sach/${element.slug}/${element.id}`}>
+                            <div className='mt-4 border-t border-gray-200'>
+                              <div className='flex py-2 items-center'>
+                                <img src={element.image} alt='' className='h-20 mr-4' />
+                                <a href='' className='basis-2/3 text-lg text-gray-600'>
+                                  {element.name}
+                                </a>
+                                <span className='basis-1/5'>x{element.Book_Order.quantity}</span>
+                                <div>
+                                  <span className='line-through text-gray-500 mr-2 text-sm'>{formatPriceVND(element.price)}</span>
+                                  <span className='font-medium text-red-600'>{formatPriceVND(priceAfterDiscount)}</span>
+                                </div>
                               </div>
                             </div>
-                          </div>
+                          </NavLink>
                         </>
                       )
                     })}
