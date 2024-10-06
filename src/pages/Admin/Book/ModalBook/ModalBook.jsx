@@ -103,6 +103,8 @@ function ModalBook({ isModalBook, setIsModalBook, fetchAllBook, action, dataModa
           setIsModalBook(false)
           fetchAllBook()
           toast.success(res.message)
+          setImageUrl()
+          setValidInput(validInputDefault)
         }
       }
     } catch (error) {
@@ -114,6 +116,8 @@ function ModalBook({ isModalBook, setIsModalBook, fetchAllBook, action, dataModa
     setIsModalBook(false)
     setDataBook(dataBookDefault)
     setImageUrl('')
+    setValidInput(validInputDefault)
+    setLoading(false)
   }
 
   const uploadButton = (
