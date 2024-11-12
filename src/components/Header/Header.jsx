@@ -5,7 +5,7 @@ import fahasa from '~/assets/fahasa-logo.webp'
 import Notification from './DropDowns/Notification'
 import Cart from './DropDowns/Cart'
 import Profile from './DropDowns/Profile'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import Tippy from '@tippyjs/react/headless'
 import { AppstoreOutlined, RiseOutlined, SettingOutlined } from '@ant-design/icons'
 import { useContext, useEffect, useState } from 'react'
@@ -21,6 +21,7 @@ function Header() {
   const [listBooksSearch, setListBooksSearch] = useState([])
   const [searchValue, setSearchValue] = useState('')
   const [showResult, setShowResult] = useState(false)
+  const navigate = useNavigate()
 
   const valueSearchDebounce = useDebounce(searchValue, 500)
 
@@ -44,6 +45,12 @@ function Header() {
     const searchValue = e.target.value
     if (!searchValue.startsWith(' ')) {
       setSearchValue(searchValue)
+    }
+  }
+
+  const handleKeyDown = (e) => {
+    if (e && e.keyCode === 13) {
+      navigate('/search-engine')
     }
   }
 
@@ -139,6 +146,7 @@ function Header() {
                     value={searchValue}
                     onChange={(e) => handleChange(e)}
                     onFocus={() => setShowResult(true)}
+                    onKeyDown={(e) => handleKeyDown(e)}
                   />
                 </Tippy>
 

@@ -61,10 +61,14 @@ function ListUser() {
   const [dataModalUser, setDataModalUser] = useState({})
 
   const handleEditUser = async (user) => {
-    const inforUser = await userAPI.getUser(user)
-    setIsModalUser(true)
-    setActionModalUser('UPDATE')
-    setDataModalUser(inforUser)
+    try {
+      const inforUser = await userAPI.getUser(user)
+      setIsModalUser(true)
+      setActionModalUser('UPDATE')
+      setDataModalUser(inforUser)
+    } catch (error) {
+      toast.error(error.response.data.message)
+    }
   }
   const handleDeleteUser = (user) => {
     setIsModalOpen(true)

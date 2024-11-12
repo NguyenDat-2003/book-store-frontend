@@ -8,12 +8,11 @@ import { toast } from 'react-toastify'
 function Home() {
   const [listBooks, setListBooks] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
-  const [currentLimit, setCurrentLimit] = useState(10)
   const [totalRecords, setTotalRecords] = useState(0)
 
   const fetchAllBook = async () => {
     try {
-      const res = await bookAPI.getAllBook(currentPage, currentLimit)
+      const res = await bookAPI.getAllBook(currentPage, 8)
       setListBooks(res.books)
       setTotalRecords(res.totalRows)
     } catch (error) {
@@ -39,7 +38,7 @@ function Home() {
         listBooks={listBooks}
         setCurrentPage={setCurrentPage}
         totalRecords={totalRecords}
-        currentLimit={currentLimit}
+        currentLimit={8}
         iconTitle={<FontAwesomeIcon icon={faList} />}
         title='Tất cả sản phẩm'
       />

@@ -44,10 +44,10 @@ function ListOrderItem({ item, statusMessage, fetchDataListOrder, onHideBtnConfi
                   <div className='mt-4 border-t border-gray-200'>
                     <div className='flex py-2 items-center'>
                       <img src={element.image} alt='' className='h-20 mr-4' />
-                      <a href='' className='basis-2/3 text-lg text-gray-600 pr-2'>
+                      <a href='' className='basis-2/3 text-gray-600'>
                         {element.name}
                       </a>
-                      <span className='basis-1/5'>x{element.Book_Order.quantity}</span>
+                      <span className='basis-1/5 text-center'>x{element.Book_Order.quantity}</span>
                       <div>
                         <span className='line-through text-gray-500 mr-2 text-sm'>{formatPriceVND(element.price)}</span>
                         <span className='font-medium text-red-600'>{formatPriceVND(priceAfterDiscount)}</span>
@@ -75,7 +75,7 @@ function ListOrderItem({ item, statusMessage, fetchDataListOrder, onHideBtnConfi
               <FontAwesomeIcon icon={faDollar} className='mr-2 text-red-600 text-xl' />
               Thành tiền:
             </span>
-            <span className='text-red-600 ml-2 text-2xl font-medium'>{formatPriceVND(item.totalOrderPrice)}</span>
+            <span className='text-red-600 ml-2 text-xl font-medium'>{formatPriceVND(item.totalOrderPrice)}</span>
           </div>
         </div>
       </div>
