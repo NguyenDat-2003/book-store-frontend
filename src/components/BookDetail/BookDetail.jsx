@@ -80,7 +80,7 @@ function BookDetail() {
                     <FontAwesomeIcon icon={faCartShopping} />
                     Thêm vào giỏ hàng
                   </Button>
-                  <Button type='primary' disabled danger className='basis-3/6 h-10 font-medium'>
+                  <Button type='primary' disabled danger className='basis-3/6 h-10 font-medium ml-2'>
                     Mua ngay
                   </Button>
                 </>
@@ -90,7 +90,7 @@ function BookDetail() {
                     <FontAwesomeIcon icon={faCartShopping} />
                     Thêm vào giỏ hàng
                   </Button>
-                  <Button type='primary' danger className='basis-3/6 h-10 font-medium' onClick={handleBuyNow}>
+                  <Button type='primary' danger className='basis-3/6 h-10 font-medium ml-2' onClick={handleBuyNow}>
                     Mua ngay
                   </Button>
                 </>

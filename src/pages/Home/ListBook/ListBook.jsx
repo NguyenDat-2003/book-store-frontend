@@ -11,7 +11,7 @@ function ListBook({ listBooks, setCurrentPage, totalRecords, currentLimit, noPag
         <span className='mr-2'>{iconTitle}</span>
         {title}
       </p>
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 bg-white p-4 rounded-l-lg'>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 bg-white p-4 rounded-l-lg'>
         {listBooks &&
           listBooks.map((book, index) => {
             return (
@@ -36,10 +36,10 @@ function ListBook({ listBooks, setCurrentPage, totalRecords, currentLimit, noPag
                             <Rate allowHalf defaultValue={book.ratingsAverage} disabled className='text-sm' />
                             <span className='text-gray-400 ml-2'>({book.ratingsAverage})</span>
                           </div>
-                          <p className='text-gray-400 text-xs'>
-                            Đã bán: <span className='text-gray-600'>{book.sold || 0}</span>
-                          </p>
                         </div>
+                        <p className='text-gray-400 text-xs'>
+                          Đã bán: <span className='text-gray-600'>{book.sold || 0}</span>
+                        </p>
                       </div>
                     </div>
                   </Badge.Ribbon>

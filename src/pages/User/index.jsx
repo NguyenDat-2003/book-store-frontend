@@ -52,12 +52,14 @@ function User() {
           <div className='grid grid-cols-5 gap-4'>
             <div>
               <div className='bg-white rounded-lg'>
-                <div className='font-medium p-4 text-center flex items-center '>
+                <div className='font-medium p-2 text-center flex items-center '>
                   {!currentUser.avatar ? <Avatar size='large' icon={<UserOutlined />} /> : <img src={currentUser.avatar} className='h-10 w-10 rounded-full object-cover' />}
-                  <p className='ml-2 text-sm'>
-                    {currentUser.firstName} {currentUser.lastName} <br />
-                    <span className='text-gray-400'>{currentUser.email}</span>
-                  </p>
+                  <div className='ml-2 text-sm'>
+                    <span className='line-clamp-1'>
+                      {currentUser.firstName} {currentUser.lastName}
+                    </span>
+                    <span className='text-gray-400 line-clamp-1'>{currentUser.email}</span>
+                  </div>
                 </div>
                 <div>
                   <Menu

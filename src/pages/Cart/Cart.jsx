@@ -73,7 +73,7 @@ function Cart() {
             <div className='grid grid-cols-3 gap-2'>
               <div className='col-span-2'>
                 <div className='flex flex-col'>
-                  <div className='flex items-center text-sm  py-2 bg-white rounded-lg p-2 mb-2'>
+                  <div className='flex items-center text-sm bg-white rounded-lg p-4 mb-2'>
                     <span className='basis-8/12'>Thông tin sản phẩm</span>
                     <span className='basis-1/6'>Số lượng</span>
                     <span>Thành tiền</span>
@@ -82,11 +82,11 @@ function Cart() {
                     const priceAfterDiscount = (item.price * (100 - item.discount)) / 100
                     return (
                       <>
-                        <div key={item.id} className='flex items-center text-sm  py-2 bg-white rounded-lg mb-2'>
+                        <div key={item.id} className='flex items-center text-sm py-4 bg-white rounded-lg mb-2'>
                           <div className='basis-3/5 flex mr-8'>
                             <img src={item.image} alt='' className='h-32 mr-4' />
                             <div className='flex flex-col'>
-                              <NavLink to={`/chi-tiet-sach/${item.slug}/${item.id}`} className='basis-1/3 text-gray-600'>
+                              <NavLink to={`/chi-tiet-sach/${item.slug}/${item.id}`} className='basis-1/3 text-gray-600 line-clamp-2'>
                                 {item.name}
                               </NavLink>
                               <div>
@@ -95,11 +95,11 @@ function Cart() {
                               </div>
                             </div>
                           </div>
-                          <div className='border-solid border border-gray-200 rounded-lg mr-14'>
+                          <div className='border-solid border border-gray-200 rounded-lg mr-6'>
                             <button className='p-2 hover:scale-125' onClick={() => handleDecreaseQuantity(item)}>
                               <FontAwesomeIcon icon={faMinus} />
                             </button>
-                            <span className='px-4'>{item.Book_Cart.quantity}</span>
+                            <span className='px-2'>{item.Book_Cart.quantity}</span>
                             <button className='p-2 hover:scale-125' onClick={() => handleIncreaseQuantity(item)}>
                               <FontAwesomeIcon icon={faPlus} />
                             </button>

@@ -9,6 +9,8 @@ import { AuthContextProvider } from './context/AuthContext.jsx'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <>
     <AuthContextProvider>
+      {/* <div className='overflow-hidden'>
+      </div> */}
       <App />
     </AuthContextProvider>
     <ToastContainer
