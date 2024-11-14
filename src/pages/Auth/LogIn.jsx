@@ -5,10 +5,11 @@ import { Navigate, NavLink, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import authAPI from '~/api/authAPI'
 import { AuthContext } from '~/context/AuthContext'
+import ModalForgotPassword from './ModalForgotPassword'
 
 function LogIn() {
   const { updateUser, currentUser } = useContext(AuthContext)
-
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [isLoading, setisLoading] = useState(false)
 
   const navigate = useNavigate()
@@ -70,9 +71,9 @@ function LogIn() {
               <Form.Item>
                 <div className='flex justify-between items-center'>
                   <NavLink to='/register'>Đăng ký ngay !</NavLink>
-                  <a href='' className='text-rose-500 hover:text-rose-500'>
+                  <span className='text-rose-500 hover:text-rose-500 cursor-pointer' onClick={() => setIsModalOpen(true)}>
                     Quên mật khẩu?
-                  </a>
+                  </span>
                 </div>
               </Form.Item>
 
@@ -91,6 +92,7 @@ function LogIn() {
             </Form>
           </div>
         </div>
+        <ModalForgotPassword isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
       </>
     )
   }

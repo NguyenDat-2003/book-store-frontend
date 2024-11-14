@@ -32,6 +32,14 @@ const userAPI = {
   updateStatusOrder: (reqBody) => {
     const url = '/user/update-status'
     return axiosClient.put(url, reqBody)
+  },
+  sendEmail: (reqBody) => {
+    const url = '/user/send-mail'
+    return axiosClient.post(url, reqBody)
+  },
+  changePassword: (reqBody) => {
+    const url = '/user/change-password'
+    return axiosClient.post(url, reqBody)
   }
 }
 
