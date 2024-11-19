@@ -16,7 +16,6 @@ import User from './pages/User'
 import Profile from './pages/User/Profile/Profile'
 import Order from './pages/User/Order/Order'
 import AdminOrder from './pages/Admin/Order'
-import SearchEngine from './pages/SearchEngine'
 
 function App() {
   const router = createBrowserRouter([
@@ -30,8 +29,7 @@ function App() {
         { path: 'register', element: <Register /> },
         { path: 'chi-tiet-sach/:slug/:id', element: <BookDetail /> },
         { path: 'checkout', element: <Checkout /> },
-        { path: 'my-cart', element: <Cart /> },
-        { path: 'search-engine', element: <SearchEngine /> }
+        { path: 'my-cart', element: <Cart /> }
       ]
     },
     {
