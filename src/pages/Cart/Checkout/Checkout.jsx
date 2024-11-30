@@ -10,17 +10,23 @@ function Checkout() {
   const formItemLayout = {
     labelCol: {
       xs: {
-        span: 24
+        span: 8
       },
       sm: {
+        span: 7
+      },
+      md: {
         span: 8
       }
     },
     wrapperCol: {
       xs: {
-        span: 24
+        span: 16
       },
       sm: {
+        span: 10
+      },
+      md: {
         span: 16
       }
     }
@@ -61,7 +67,7 @@ function Checkout() {
         <Form {...formItemLayout} className='mt-4 w-full' onFinish={onFinish} name='register' scrollToFirstError>
           <div className='bg-white rounded-lg p-4 '>
             <p className='font-medium border-b border-gray-300 pb-2 text-center'>ĐỊA CHỈ GIAO HÀNG</p>
-            <div className='-ml-96 mt-4'>
+            <div className='-ml-64 mt-4'>
               <Form.Item
                 name='fullName'
                 label='Tên người nhận'
